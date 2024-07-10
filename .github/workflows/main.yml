@@ -14,5 +14,15 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     
+    # Obtendo os 7 primeiros caracteres da hash do commit 
+    # para gerar a versão da imagem
+    # utiliza-se o $GITHUB_OUTPUT para obter a saída do comando
+    # permitindo assim a utilização desse valor no próximo step
+    - name: Generate SHA
+      id: generate_sha
+      run: |
+        SHA=${echo $GITHUB_SHA | head -c7}
+        echo "sha=$SHA" >> $GITHUB_OUTPUT
+    
     - name: Build docker image
-      run: docker build -t lipeeeeh14/nlw-journey-devops:latest .
+      run: docker build -t lipeeeeh14/nlw-journey-devops:${{ steps.generate_sha.outputs.sha }} .
