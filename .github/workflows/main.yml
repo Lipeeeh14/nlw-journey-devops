@@ -32,5 +32,11 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build docker image
-      run: docker build -t lipeeeeh14/nlw-journey-devops:${{ steps.generate_sha.outputs.sha }} .
+    - name: Build and push
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        push: true # por padrão é feito apenas o build 
+        tags: | 
+          lipeeeeh14/nlw-journey-devops:${{ steps.generate_sha.outputs.sha }}
+          lipeeeeh14/nlw-journey-devops:latest
